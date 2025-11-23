@@ -1,0 +1,1387 @@
+{
+  "name": "IMAGE TO IMAGE EDITOR",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b1c756a4-e9ad-4866-9e16-9c59b2ae7327",
+              "name": "bot id",
+              "value": "=8205768551:AAF-ivRCSBdla8P-uEqLuURSa0K3GOID8jU",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2816,
+        240
+      ],
+      "id": "f980ee0e-69fc-480c-9552-98c3fbeb968b",
+      "name": "BOT ID"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={\n  \"property_name\": \"{{ $json.output.data.property_name }}\",\n  \"location\": \"{{ $json.output.data.location }}\",\n  \"headline\": \"{{ $json.output.data.headline }}\",\n  \"tagline\": \"{{ $json.output.data.tagline }}\",\n  \"bedrooms\": {{ $json.output.data.bedrooms }},\n  \"beds\": {{ $json.output.data.beds }},\n  \"bathrooms\":{{ $json.output.data.bathrooms }} ,\n  \"guests\": {{ $json.output.data.guests }},\n  \"images\": {{ $('Telegram Trigger').item.json.message.photo[0].file_id }},\n  \"facts_bar\": \"{{ $json.output.copy.facts_bar }}\",\n  \"confidence\": {{ $json.output.audit.confidence }}\n}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Role:\nYou are a creative prompt composer for Google Nano Banana (image editor).\n\nGoal:\nBuild a single instruction string for Nano Banana to edit the user’s uploaded image(s) into a PlotSeeker-branded social post.\nDo not generate new imagery — only edit the uploaded image(s).\n\nAuthoritative Variables\n\nYou will receive a flat JSON object containing:\nproperty_name, location, headline, tagline, bedrooms, beds, bathrooms, guests, images[], facts_bar, confidence.\n\nTreat these values as trusted and final.\nDo not change counts or names.\nIf any are null/empty, simply omit that line in the final instruction.\n\nFixed Brand & Design Rules\n\nCore Brand Essence:\nLuxury · Clarity · Minimalism · Editorial Precision\n\nDo not generate new imagery.\nFocus on layout, styling, and composition creativity while preserving real property visuals.\n\nStyle: luxury, clean, minimal; balanced white space; soft shadows; high readability.\nFrames: rounded photo frames; gradient backgrounds (light gray → deep navy/charcoal).\nTypography: elegant serif headline + modern sans-serif body (Playfair-like + Poppins-like).\nColors: Gold/Mustard #D4AF37, Charcoal #1E1E1E, optional amber or copper accents.\nBranding: use PlotSeeker logo at top (if unavailable, render “PLOTSEEKER” in gold with minimal house icon).\nOptimization: gentle vibrancy, clear textures (wood, marble, fabric), slight bloom/clarity polish.\n\nText Hierarchy (Overlay)\n\nMain Heading (large serif): {headline}\n\nSubheading (uppercase, gold): {property_name} (if present). Never repeat “APARTMENT.”\n\nLocation (smaller): {location}\n\nDetails bar: use {facts_bar} as-is\n\nHighlight line (bottom, gold): 📍 {tagline}\n\nSkip any line where data is missing. Never invent content.\n\n🎨 Creative Exploration Directive (Critical Update)\n\nEvery time you compose a Nano Banana prompt:\nYou must use the Think Tool to concept a completely new visual composition inspired by editorial real estate design, minimal luxury advertising, and social campaign art direction.\n\nYou must:\n\nRedesign overall composition and hierarchy — not just reposition text.\n\nUse inspiration from magazine covers, property brochures, and modern ad layouts.\n\nExplore varied layout archetypes such as:\n\nModern Split Frame: diagonal or vertical split between image and text block.\n\nEditorial Magazine: large serif headline centered, smaller subtext along the edges.\n\nMinimal Luxe Card: image contained in a bordered panel with spacious typography.\n\nSide-Bar Accent: image on one side, text framed in gold box or soft gradient overlay.\n\nFramed Column: vertical stacked frames with alternating color panels.\n\nModern Poster: oversized headline, cropped image, light negative space.\n\nAsymmetric Luxe Layout: overlapping text layers or offset frames.\n\nAlternate color gradients (dark → light, left → right, top → bottom).\n\nAdjust logo position randomly (top-left / center / right / bottom) — always visually balanced.\n\nModify text alignment — center, flush-left, or flush-right — based on layout style.\n\nExperiment with geometric accents: thin borders, circular masks, background overlays, or gradient bands.\n\nRotate between visual tone directions:\n\n“Editorial Modern”\n\n“Hotel Brochure”\n\n“Luxury Magazine Cover”\n\n“Minimal Design Poster”\n\n“Lifestyle Card”\n\nEach design must feel like part of the same brand, but visually distinct from all previous ones.\n\nOutput Format (JSON only)\n\nReturn valid JSON with these keys and nothing else:\n\n{\n  \"prompt\": \"<ONE complete instruction string for Nano Banana with all values inserted and the rules above>\",\n  \"images\": [],\n  \"sizes\": [\"1080x1350\", \"1080x1920\"],\n  \"layout_style\": \"<short description of the chosen creative layout>\"\n}\n\nRules\n\nNever change numeric values or names.\n\nNever add emojis except the 📍 in tagline.\n\nAlways maintain PlotSeeker’s luxury tone.\n\nDo not wrap JSON in markdown.\n\nNever repeat a previously used layout, even partially."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2592,
+        336
+      ],
+      "id": "652bd11a-9961-48f5-bc42-aaaa02c9d0f0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2624,
+        512
+      ],
+      "id": "158496c2-5ce6-4ca3-9d19-37d956397f73",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "eytCqYM4iZP3k0rH",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -2528,
+        512
+      ],
+      "id": "8191428f-07f7-4167-8bee-d7575c1dc36e",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 6d701d1074ae3a93d60c964bd7825102"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/nano-banana-edit\",\n  \"input\": {\n    \"prompt\": \"{{ $('AI Agent').item.json.output.prompt }}\",\n    \"image_urls\": [\n      \"https://api.telegram.org/file/bot{{ $('BOT ID').item.json['bot id'] }}/{{ $('Get img Path').item.json.result.file_path }}\"\n    ],\n    \"output_format\": \"{{ $json.output_format }}\",\n    \"image_size\": \"{{ $('Code in JavaScript1').item.json.image_size }}\",\n    \"layout_style\": \"{{ $('Code in JavaScript1').item.json.layout_style }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1744,
+        336
+      ],
+      "id": "33ad1cb5-4264-468f-8898-ff1474f9e3cc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1456,
+        336
+      ],
+      "id": "c2cc54ae-8f31-4e7b-8a40-6f9ec5c6661b",
+      "name": "Wait",
+      "webhookId": "4c19e3b5-b3f3-4293-b2f6-92dd1e1dd67f",
+      "executeOnce": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $json['bot id'] }}/getFile?file_id={{ $('Telegram Trigger').item.json.message.photo[1].file_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2816,
+        96
+      ],
+      "id": "92c5a5d4-b403-43dd-ad2b-8295a733a869",
+      "name": "Get img Path"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3bb3419d-a0b7-43e0-9408-25b78c8db970",
+              "leftValue": "={{ $json.data.resultJson }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1072,
+        336
+      ],
+      "id": "a0c46b0b-5fba-4f5d-be4e-6832749c91de",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        320
+      ],
+      "id": "abf41980-ec05-449b-9385-be8054f54133",
+      "name": "Send a photo message",
+      "webhookId": "40620beb-89ee-47c2-8acc-28cfc422a2d3",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "Do you want to upload this on social media",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        128
+      ],
+      "id": "0ba019b9-8688-4336-92e0-6c71f9cc7299",
+      "name": "Send message and wait for response",
+      "webhookId": "16738cf9-d914-4646-a38b-58d91bf862e8",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Send a photo message').item.json.result.chat.id }}",
+        "message": "What changes should I make",
+        "responseType": "freeText",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1520,
+        736
+      ],
+      "id": "d8e6fe5d-a7aa-46fe-a338-1f894d02e495",
+      "name": "Send message and wait for response1",
+      "webhookId": "2a57a7c3-b470-4df1-8eb6-d32fe07712cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f817f990-ec39-4d51-9672-c216d47ba2c0",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        128
+      ],
+      "id": "f227435a-5064-4553-9bea-e153bbf24564",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={\n  \"property_name\": \"{{ $('AI Agent2').item.json.output.data.property_name }}\",\n  \"location\": \"{{ $('AI Agent2').item.json.output.data.location }}\",\n  \"headline\": \"{{ $('AI Agent2').item.json.output.data.headline }}\",\n  \"tagline\": \"{{ $('AI Agent2').item.json.output.data.tagline }}\",\n  \"bedrooms\": {{ $('AI Agent2').item.json.output.data.bedrooms }},\n  \"beds\": {{ $('AI Agent2').item.json.output.data.beds }},\n  \"bathrooms\": {{ $('AI Agent2').item.json.output.data.bathrooms }},\n  \"guests\": {{ $('AI Agent2').item.json.output.data.guests }},\n  \"images\": {{ $('Telegram Trigger').item.json.message.photo[0].file_id }},\n  \"facts_bar\": \"{{ $('AI Agent2').item.json.output.copy.facts_bar }}\",\n  \"confidence\": {{ $('AI Agent2').item.json.output.audit.confidence }}\n}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Role:\nYou are a creative prompt composer for Google Nano Banana (image editor).\n\nGoal:\nBuild a single instruction string for Nano Banana to edit the user’s uploaded image(s) into a PlotSeeker-branded social post.\nDo not generate new imagery — only edit the uploaded image(s).\n\nAuthoritative Variables\n\nYou will receive a flat JSON object containing:\nproperty_name, location, headline, tagline, bedrooms, beds, bathrooms, guests, images[], facts_bar, confidence.\n\nTreat these values as trusted and final.\nDo not change counts or names.\nIf any are null/empty, simply omit that line in the final instruction.\n\nFixed Brand & Design Rules\n\nCore Brand Essence:\nLuxury · Clarity · Minimalism · Editorial Precision\n\nDo not generate new imagery.\nFocus on layout, styling, and composition creativity while preserving real property visuals.\n\nStyle: luxury, clean, minimal; balanced white space; soft shadows; high readability.\nFrames: rounded photo frames; gradient backgrounds (light gray → deep navy/charcoal).\nTypography: elegant serif headline + modern sans-serif body (Playfair-like + Poppins-like).\nColors: Gold/Mustard #D4AF37, Charcoal #1E1E1E, optional amber or copper accents.\nBranding: use PlotSeeker logo at top (if unavailable, render “PLOTSEEKER” in gold with minimal house icon).\nOptimization: gentle vibrancy, clear textures (wood, marble, fabric), slight bloom/clarity polish.\n\nText Hierarchy (Overlay)\n\nMain Heading (large serif): {headline}\nSubheading (uppercase, gold): {property_name} (if present). Never repeat “APARTMENT.”\nLocation (smaller): {location}\nDetails bar: use {facts_bar} as-is\nHighlight line (bottom, gold): 📍 {tagline}\n\nSkip any line where data is missing. Never invent content.\n\n🎨 Creative Exploration Directive (Critical Update)\n\nEvery time you compose a Nano Banana prompt:\nYou must use the Think Tool to concept a completely new visual composition inspired by editorial real estate design, minimal luxury advertising, and social campaign art direction.\n\nYou must:\n\nRedesign overall composition and hierarchy — not just reposition text.\n\nUse inspiration from magazine covers, property brochures, and modern ad layouts.\n\nExplore varied layout archetypes such as:\nModern Split Frame (diagonal/vertical split), Editorial Magazine (centered large serif), Minimal Luxe Card (bordered panel), Side-Bar Accent (gold box/gradient overlay), Framed Column (stacked frames), Modern Poster (oversized headline, cropped image), Asymmetric Luxe Layout (overlaps/offset frames).\n\nAlternate color gradients (dark → light, left → right, top → bottom).\n\nAdjust logo position randomly (top-left / center / right / bottom) — always visually balanced.\n\nModify text alignment — center, flush-left, or flush-right — based on layout style.\n\nExperiment with geometric accents: thin borders, circular masks, background overlays, or gradient bands.\n\nRotate between visual tone directions: “Editorial Modern”, “Hotel Brochure”, “Luxury Magazine Cover”, “Minimal Design Poster”, “Lifestyle Card”.\n\nEach design must feel like part of the same brand, but visually distinct from all previous ones.\n\n🧠 Client Feedback Integration\n\nTake client feedback {{ $json.data.text }} and use the Think Tool to interpret, refine, and integrate it into the design prompt.\nUse this feedback to adjust text tone, layout preferences, or emphasis (e.g., highlight amenities, tweak tagline tone, or modify framing).\nAlways keep brand style, layout rules, and visual identity consistent while adapting to client requests.\n\nOutput Format (JSON only)\n\nReturn valid JSON with these keys and nothing else:\n\n{\n\"prompt\": \"<ONE complete instruction string for Nano Banana with all values inserted and the rules above>\",\n\"images\": [],\n\"sizes\": [\"1080x1350\", \"1080x1920\"],\n\"layout_style\": \"<short description of the chosen creative layout>\"\n}\n\nRules\n\nNever change numeric values or names.\nNever add emojis except the 📍 in tagline.\nAlways maintain PlotSeeker’s luxury tone.\nDo not wrap JSON in markdown.\nNever repeat a previously used layout, even partially."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2096,
+        1024
+      ],
+      "id": "cc725f18-7f73-4642-84f9-213d3c550282",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2304,
+        1264
+      ],
+      "id": "b7b1b75c-38ec-4eea-b23f-0ce303aaa478",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "eytCqYM4iZP3k0rH",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -2160,
+        1264
+      ],
+      "id": "f34a2fd7-787e-4e8f-a593-805ed0e6d95b",
+      "name": "Think1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        336
+      ],
+      "id": "ed7aed4f-3c28-43a0-ab11-a4f0640606e2",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "url": "={{ JSON.parse($node['Get Image1'].json.data.resultJson).resultUrls[0] }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -672,
+        320
+      ],
+      "id": "be9235c6-b76e-4cbe-b0d7-13239d010f0c",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "content": "## PHASE 1 — Image Analysis\n",
+        "height": 800,
+        "width": 832,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2864,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "1feb416b-c6f8-42c1-969e-5b1a5110eb2b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## PHASE 3 — Captions + Client Review & Posting\n",
+        "height": 672,
+        "width": 1568,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -496,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "d4daa2dd-b40e-4b8e-be80-3b423cd63a88",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## PHASE 4 — Recreation Phase\n",
+        "height": 736,
+        "width": 1088,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2432,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "42284d5f-907c-4d46-879f-ee511af1b8d0",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        -2432,
+        512
+      ],
+      "id": "77f2e540-5efa-4f2f-bacb-2c1e008928d5",
+      "name": "Auto-fixing Output Parser"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"required\": [\"prompt\", \"images\", \"sizes\", \"layout_style\"],\n  \"properties\": {\n    \"prompt\": { \"type\": \"string\", \"minLength\": 1 },\n    \"images\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\", \"minLength\": 1 }\n    },\n    \"sizes\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\", \"enum\": [\"1080x1350\", \"1080x1920\"] },\n      \"minItems\": 2,\n      \"maxItems\": 2,\n      \"uniqueItems\": true\n    },\n    \"layout_style\": {\n      \"type\": \"string\",\n      \"minLength\": 3,\n      \"description\": \"Short creative label describing layout type (e.g. 'Minimal Luxe Card', 'Editorial Split Frame').\"\n    }\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2176,
+        512
+      ],
+      "id": "9f11f220-1413-46db-b5d4-88c681078cd3",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fan-out one item per target size for Kie/NanoBanana API\n// Works whether fields are at root or under `output`\n\nconst src = $json.output ?? $json;\n\nconst prompt = typeof src.prompt === 'string' ? src.prompt : '';\nconst images = Array.isArray(src.images) ? src.images : [];\nconst sizes  = Array.isArray(src.sizes)  ? src.sizes  : ['1080x1350','1080x1920']; // default\nconst layoutStyle =\n  (typeof src.layout_style === 'string' && src.layout_style.trim())\n    ? src.layout_style.trim()\n    : 'auto'; // safe default if agent didn't set it\n\nfunction sizeToRatio(s) {\n  if (s === '1080x1350') return '4:5';\n  if (s === '1080x1920') return '9:16';\n  if (s === '1080x1080') return '1:1';\n  return 'auto';\n}\n\n// Emit one item per requested size\nconst out = sizes.map(s => ({\n  json: {\n    prompt,\n    image_urls: images,\n    image_size: sizeToRatio(s),\n    output_format: 'jpeg',     // or 'png'\n    layout_style: layoutStyle  // <-- new field passed through\n  }\n}));\n\n// In \"Run Once For All Items\" mode you must return an ARRAY\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2224,
+        336
+      ],
+      "id": "c735de8c-4f16-4af7-bb6b-e0ed6214f6d8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fan-out one item per target size for Kie API\n// Works whether fields are at root or under `output`\n// (your screenshot shows they are under `output`)\n\nconst src = $json.output ?? $json;\n\nconst prompt = src.prompt || '';\nconst images = Array.isArray(src.images) ? src.images : [];\nconst sizes  = Array.isArray(src.sizes)  ? src.sizes  : ['1080x1350','1080x1920']; // default\n\nfunction sizeToRatio(s) {\n  if (s === '1080x1350') return '4:5';\n  if (s === '1080x1920') return '9:16';\n  if (s === '1080x1080') return '1:1';\n  return 'auto';\n}\n\nconst out = sizes.map(s => ({\n  json: {\n    prompt,\n    image_urls: images,\n    image_size: sizeToRatio(s),\n    output_format: 'jpeg' // or 'png'\n  }\n}));\n\n// Must return an ARRAY in \"Run Once For All Items\" mode\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        1024
+      ],
+      "id": "82ea08e6-4f9a-4a6d-a769-a6698c986778",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        -2064,
+        1248
+      ],
+      "id": "d97c7f99-5e3c-458d-a3e6-acbb8a1d626e",
+      "name": "Auto-fixing Output Parser1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"required\": [\"prompt\", \"images\", \"sizes\", \"layout_style\"],\n  \"properties\": {\n    \"prompt\": {\n      \"type\": \"string\",\n      \"minLength\": 1\n    },\n    \"images\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\", \"minLength\": 1 }\n    },\n    \"sizes\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\", \"enum\": [\"1080x1350\", \"1080x1920\"] },\n      \"minItems\": 2,\n      \"maxItems\": 2,\n      \"uniqueItems\": true\n    },\n    \"layout_style\": {\n      \"type\": \"string\",\n      \"minLength\": 3,\n      \"description\": \"Short label of the chosen creative layout (e.g., 'Modern Editorial', 'Minimal Luxe Card').\"\n    }\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1808,
+        1248
+      ],
+      "id": "df4acbed-5a57-48c1-b7f6-1ae93c6ecbe5",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2816,
+        432
+      ],
+      "id": "a9245b97-478c-416f-9e7d-0fdc1d325395",
+      "name": "Telegram Trigger",
+      "webhookId": "9b857dbd-02ee-406a-9022-457923596504",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e1a393f8-2314-4e3a-a2d7-ab61749053ea",
+              "leftValue": "={{ $json.data.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2384,
+        1040
+      ],
+      "id": "4f3b678e-702a-49ce-b240-572efbde129e",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Caption (may be empty): {{ $('Telegram Trigger').item.json.message.caption }}\n\nReturn JSON ONLY in this exact structure (object, not string):\n{\n  \"data\": {\n    \"property_name\": \"<string or null>\",\n    \"location\": \"<string or null>\",\n    \"headline\": \"<string>\",\n    \"tagline\": \"<string>\",\n    \"bedrooms\": <int or null>,\n    \"beds\": <int or null>,\n    \"bathrooms\": <int or null>,\n    \"guests\": <int or null>,\n    \"images\": [\"<url1>\", \"<url2>\"]\n  },\n  \"copy\": {\n    \"facts_bar\": \"<string>\",\n    \"caption_short\": \"<string>\",\n    \"caption_long\": \"<string>\"\n  },\n  \"audit\": {\n    \"confidence\": <number>,\n    \"sources\": {\n      \"property_name\": \"text\"|\"image\"|\"null\",\n      \"location\": \"text\"|\"image\"|\"null\",\n      \"bedrooms\": \"text\"|\"image\"|\"null\",\n      \"beds\": \"text\"|\"image\"|\"null\",\n      \"bathrooms\": \"text\"|\"image\"|\"null\",\n      \"guests\": \"text\"|\"image\"|\"null\"\n    },\n    \"notes\": \"<string>\"\n  }\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a real-estate metadata extractor and copywriter.\n\nAUTHORITATIVE SOURCE RULES (CRITICAL)\n- If the user’s message contains explicit values for: property_name, location, bedrooms, beds, bathrooms, guests — COPY THEM VERBATIM; do not change them even if the image differs.\n- Only infer from the image when a value is missing in text.\n- If text and image disagree, choose TEXT and note the conflict in audit.notes.\n\nINPUTS YOU MAY RECEIVE\n- 1–2 property images (attachments/URLs).\n- Free text lines (e.g., “APARTMENT 6”, “Great Titchfield Street”, “1 bedroom · 3 beds · 1 bathroom · 6 guests”, tagline ideas).\n- Telegram caption may be present.\n\nEXTRACTION\n1) Parse free text first; accept separators \".\", \"·\", \"•\", \"|\".\n2) Normalize counts to integers.\n3) Build a concise headline and a marketing tagline (<=120 chars, no emojis).\n4) If a field is still unknown, you MAY infer from image; else leave null.\n5) facts_bar: include only present items, order = bedrooms, beds, bathrooms, guests; correct plurals; join with \" · \".\n6) audit.sources: set each to \"text\" | \"image\" | \"null\". Add audit.confidence (0.0–1.0). Mention conflicts/assumptions in audit.notes.\n\nOUTPUT CONTRACT (STRICT)\n- Return **JSON only** (no prose, no markdown, no code fences).\n- Valid JSON object (not a string), double quotes, no trailing commas.\n- EXACT structure below; do not add or rename keys.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2592,
+        96
+      ],
+      "id": "8ad0aa09-67a7-42c0-a8af-da1bb4487e12",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2752,
+        -16
+      ],
+      "id": "bbc47934-8b4f-4461-954e-4521b266420d",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "eytCqYM4iZP3k0rH",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -2640,
+        -16
+      ],
+      "id": "aac9eab7-f418-4324-a676-a388e6fa991d",
+      "name": "Think2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        -2528,
+        -16
+      ],
+      "id": "a7501cfe-10ae-43fb-ba98-5e2b6b2fe3bf",
+      "name": "Auto-fixing Output Parser2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"required\": [\"data\", \"copy\", \"audit\"],\n  \"properties\": {\n    \"data\": {\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"required\": [\"headline\", \"tagline\", \"images\"],\n      \"properties\": {\n        \"property_name\": { \"type\": [\"string\", \"null\"] },\n        \"location\": { \"type\": [\"string\", \"null\"] },\n        \"headline\": { \"type\": \"string\" },\n        \"tagline\": { \"type\": \"string\", \"maxLength\": 120 },\n        \"bedrooms\": { \"type\": [\"integer\", \"null\"] },\n        \"beds\": { \"type\": [\"integer\", \"null\"] },\n        \"bathrooms\": { \"type\": [\"integer\", \"null\"] },\n        \"guests\": { \"type\": [\"integer\", \"null\"] },\n        \"images\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\", \"minLength\": 1 },\n          \"minItems\": 0,\n          \"maxItems\": 2\n        }\n      }\n    },\n    \"copy\": {\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"required\": [\"facts_bar\", \"caption_short\", \"caption_long\"],\n      \"properties\": {\n        \"facts_bar\": { \"type\": \"string\" },\n        \"caption_short\": { \"type\": \"string\" },\n        \"caption_long\": { \"type\": \"string\" }\n      }\n    },\n    \"audit\": {\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"required\": [\"confidence\", \"sources\", \"notes\"],\n      \"properties\": {\n        \"confidence\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 1 },\n        \"sources\": {\n          \"type\": \"object\",\n          \"additionalProperties\": false,\n          \"required\": [\"property_name\", \"location\", \"bedrooms\", \"beds\", \"bathrooms\", \"guests\"],\n          \"properties\": {\n            \"property_name\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] },\n            \"location\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] },\n            \"bedrooms\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] },\n            \"beds\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] },\n            \"bathrooms\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] },\n            \"guests\": { \"type\": \"string\", \"enum\": [\"text\", \"image\", \"null\"] }\n          }\n        },\n        \"notes\": { \"type\": \"string\" }\n      }\n    }\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2272,
+        -16
+      ],
+      "id": "2b5d1597-71a5-4b80-a6ed-f789f53c1c6a",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $json.data.taskId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer e9a4997475f8e6ed3bd0968153101c35"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1248,
+        336
+      ],
+      "id": "ef65adf3-05ae-4830-915b-abfda0f5b1c9",
+      "name": "Get Image1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "You are an expert social media content creator and branding strategist for Airbnb hosts. \nYour task is to analyze the provided image of an Airbnb property and create a high-converting social media post caption for platforms such as Instagram, Facebook, and TikTok.\n\nImportant Instructions:\n- DO NOT analyze or describe people in the image. \n- Focus only on the property — its mood, lighting, decor, environment, and what kind of experience it offers.\n- Think of the image as a travel moment — a cozy stay, a family retreat, a luxury escape, or a peaceful hideaway.\n\nGuidelines:\n1. Analyze the image and describe the property’s atmosphere, design, and emotional vibe.\n2. Write a **beautiful, engaging, and persuasive post** that feels natural and human — not robotic.\n3. The writing must:\n   - Highlight what makes the property special or desirable.\n   - Include the **brand name “Plot Seeker”** naturally within the text.\n   - Use a warm, inviting, and emotionally engaging tone that attracts travelers and families.\n   - End with a **strong call-to-action (CTA)** such as:\n     “Book your stay now!”, “Your next getaway awaits!”, “A place where you can enjoy with your family!”, or “Experience comfort with Plot Seeker.”\n4. Add a set of **relevant and trending hashtags** at the end. \n   - Include hashtags related to **travel, vacation, Airbnb, property, staycation, luxury homes, family trips, and destination lifestyle**.\n   - Example hashtags: \n     #PlotSeeker #AirbnbStay #TravelGoals #VacationVibes #FamilyRetreat #LuxuryLiving #StaycationMood #HomeAwayFromHome #Wanderlust #DreamStay\n5. Keep the text between **50 to 100 words**.\n6. Avoid generic or repetitive phrases — make it **personal, visual, and emotionally resonant**, capturing the beauty and vibe of the space.\n\nOutput Format:\n- Write only the full caption text and hashtags together in one paragraph.\n- On the next line, write a short mood summary sentence that describes the feeling or theme of the property (without any label).\n",
+        "imageUrls": "={{ $('Code in JavaScript3').item.json.url }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        80,
+        112
+      ],
+      "id": "75c425f9-914d-4e46-8347-ceff60e39aab",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "eytCqYM4iZP3k0rH",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Send a photo message').item.json.result.chat.id }}",
+        "text": "={{ $json.content }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "ba3efa80-223f-4fda-b42d-2f68e5505cc9",
+      "name": "Send a text message",
+      "webhookId": "f4e53cf0-f2a6-494b-8080-1c48703e1b97",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Send a photo message').item.json.result.chat.id }}",
+        "message": "Should I upload with this caption",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -48
+      ],
+      "id": "b03defbc-7eff-4dc8-a711-d67c6b6c8a94",
+      "name": "Send message and wait for response2",
+      "webhookId": "ee4683bf-b359-492b-89d8-446e9771b4bf",
+      "credentials": {
+        "telegramApi": {
+          "id": "ANXiBrVwvBuIdiUj",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2f262254-f32a-4673-b53c-980cc48133f0",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -48
+      ],
+      "id": "f3dfc031-56fb-4965-9da1-361e7bbcffa6",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v24.0/17841477957202468/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAATq9V2yBzwBPZBD6tOWhnafBYFd3YzZBxNSyGIcFrjVkJEvd4PMA5IVAHKoAkoh5INVS6vFrpb68OwDb3m5sodZBKNuCQFC2bw6mjzgGiQqWyYtcsHiGy5yorhpLHdBOruE3ZBoyzBIEHP7qp87B0EzFTvHTEMxkNWyRQl4uyHjyJ7DWfSvyhkzT18oOv81"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "caption",
+              "value": "={{ $('Analyze image').item.json.content }}"
+            },
+            {
+              "name": "image_url",
+              "value": "={{ $('Code in JavaScript3').item.json.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        -64
+      ],
+      "id": "39b5850d-4e15-4113-95af-237bcc1f747b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Get the full JSON data from the Get Image1 node\nconst getImageData = $json[\"data\"];\n\n// Parse the resultJson field (which is a JSON string)\nlet result;\ntry {\n  result = JSON.parse(getImageData.resultJson);\n} catch (error) {\n  throw new Error(\"Failed to parse resultJson: \" + error.message);\n}\n\n// Extract the URL (assuming the field 'resultUrls' or similar array exists)\nconst imageUrl = result.resultUrls ? result.resultUrls[0] : result.resultJson?.resultUrls?.[0] || result.resultJson?.[0] || result.result?.[0] || result?.[0] || result?.resultJson?.[0];\n\n// Return only the clean image URL\nreturn {\n  url: imageUrl || \"URL not found\"\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -848,
+        320
+      ],
+      "id": "d8f60586-8fcb-48d8-bc6f-355a42187546",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "content": "## PHASE 2 — Image Generation & Download\n",
+        "height": 320,
+        "width": 1536,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2032,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "d0fb5ac7-f0ef-499f-8f2f-873afe8bb5a0",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v24.0/17841477957202468/media_publish",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAATq9V2yBzwBPZBD6tOWhnafBYFd3YzZBxNSyGIcFrjVkJEvd4PMA5IVAHKoAkoh5INVS6vFrpb68OwDb3m5sodZBKNuCQFC2bw6mjzgGiQqWyYtcsHiGy5yorhpLHdBOruE3ZBoyzBIEHP7qp87B0EzFTvHTEMxkNWyRQl4uyHjyJ7DWfSvyhkzT18oOv81"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        848,
+        -64
+      ],
+      "id": "c1810b3c-f722-4546-b5a3-b59291094a60",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        -64
+      ],
+      "id": "780be3a2-21f9-4dff-b1dd-d17858d37295",
+      "name": "Wait2",
+      "webhookId": "45704f0a-fb4b-497d-af59-a4f8f05a304e"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        112
+      ],
+      "id": "0ae110b0-f957-4a2f-a880-17f15033e3a3",
+      "name": "Limit1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "BOT ID": {
+      "main": [
+        [
+          {
+            "node": "Get img Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get img Path": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a photo message": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "BOT ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Auto-fixing Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response2": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "79adcc44-34a3-4e6d-813e-8026ad207c74",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "92035729d32a4bb81ca7c27728ffb1c1b5ef4f84e5f893f5aaa5da3b3c2ef38c"
+  },
+  "id": "HlRT4nioPmHs8ISc",
+  "tags": []
+}
