@@ -8,7 +8,7 @@
             {
               "id": "b1c756a4-e9ad-4866-9e16-9c59b2ae7327",
               "name": "bot id",
-              "value": "=8205768551:AAF-ivRCSBdla8P-uEqLuURSa0K3GOID8jU",
+              "value": "YOUR_TELEGRAM_BOT_TOKEN",
               "type": "string"
             }
           ]
@@ -87,7 +87,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 6d701d1074ae3a93d60c964bd7825102"
+              "value": "Bearer YOUR_KIE_API_KEY"
             }
           ]
         },
@@ -642,7 +642,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer e9a4997475f8e6ed3bd0968153101c35"
+              "value": "Bearer YOUR_KIE_API_KEY"
             }
           ]
         },
@@ -783,7 +783,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer EAATq9V2yBzwBPZBD6tOWhnafBYFd3YzZBxNSyGIcFrjVkJEvd4PMA5IVAHKoAkoh5INVS6vFrpb68OwDb3m5sodZBKNuCQFC2bw6mjzgGiQqWyYtcsHiGy5yorhpLHdBOruE3ZBoyzBIEHP7qp87B0EzFTvHTEMxkNWyRQl4uyHjyJ7DWfSvyhkzT18oOv81"
+              "value": "Bearer YOUR_FACEBOOK_ACCESS_TOKEN"
             }
           ]
         },
@@ -850,7 +850,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer EAATq9V2yBzwBPZBD6tOWhnafBYFd3YzZBxNSyGIcFrjVkJEvd4PMA5IVAHKoAkoh5INVS6vFrpb68OwDb3m5sodZBKNuCQFC2bw6mjzgGiQqWyYtcsHiGy5yorhpLHdBOruE3ZBoyzBIEHP7qp87B0EzFTvHTEMxkNWyRQl4uyHjyJ7DWfSvyhkzT18oOv81"
+              "value": "Bearer YOUR_FACEBOOK_ACCESS_TOKEN"
             }
           ]
         },
